@@ -1,6 +1,7 @@
 extends Area2D
 
 const Bullet = preload("res://Bullet.tscn")
+const ExplosionEffect = preload("res://ExplosionEffect.tscn")
 
 export(int) var speed = 100
 
@@ -28,3 +29,11 @@ func fire_bullet():
 func _on_Ship_area_entered(area):
 	area.queue_free() # delete the two 2D areas
 	queue_free()
+
+
+func _exit_tree():
+	# get main node and attach to it a explosion animation child
+	var world_node = get_tree().current_scene
+	var explosion_effect = ExplosionEffect.instance()
+	world_node.add_child(explosion_effect)
+	explosion_effect.global_position = global_position
