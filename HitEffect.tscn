@@ -1,22 +1,46 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/Hit.wav" type="AudioStream" id=1]
+[ext_resource path="res://HitEffect.gd" type="Script" id=2]
 
-[sub_resource type="ParticlesMaterial" id=1]
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.0186335, 0.937888, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0.0451613, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 1
+emission_sphere_radius = 5.0
 flag_disable_z = true
+spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 50.0
-initial_velocity_random = 0.75
+initial_velocity = 75.0
+initial_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
+scale = 1.25
+scale_random = 0.5
+color_ramp = SubResource( 2 )
 
 [node name="HitEffect" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 1 )
 autoplay = true
 
 [node name="HitParticles" type="Particles2D" parent="."]
-position = Vector2( 95.8929, 80.0629 )
+emitting = false
+amount = 6
+lifetime = 0.25
+one_shot = true
 explosiveness = 1.0
-process_material = SubResource( 1 )
+process_material = SubResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+autostart = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
