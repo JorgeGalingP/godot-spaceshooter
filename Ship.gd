@@ -5,6 +5,8 @@ const ExplosionEffect = preload("res://ExplosionEffect.tscn")
 
 export(int) var speed = 100
 
+signal player_death
+
 # called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_pressed("ui_up"):
@@ -38,3 +40,4 @@ func _exit_tree():
 	world_node.call_deferred("add_child", explosion_effect)
 	# world_node.add_child(explosion_effect)
 	explosion_effect.global_position = global_position
+	emit_signal("player_death")
